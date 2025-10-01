@@ -28,11 +28,14 @@ app.use((req, res, next) => {
 })
 app.use(routes)
 
-connectDB().then(() => {
-    app.listen(3000, () => {
-        console.log('Servidor rodando na porta 3000');
-    });
+const serverPromise = connectDB().then(() => {
+    if (process.env.NODE_ENV !== 'test') {
+        app.listen(process.env.port || 3000, () => {
+            console.log('Servidor rodando na porta 3000');
+        });
+    }
 });
 
 
 module.exports = app
+module.exports.ready = serverPromise
