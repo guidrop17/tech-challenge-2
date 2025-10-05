@@ -8,7 +8,8 @@ const swaggerDocs =  require('./swagger')
 const UserController = require('./controller/User')
 const cors = require('cors')
 
-app.use(Express.json())
+app.use(Express.json({ limit: "10mb" }))
+app.use(Express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(cors({
     origin: '*'
@@ -30,8 +31,8 @@ app.use(routes)
 
 const serverPromise = connectDB().then(() => {
     if (process.env.NODE_ENV !== 'test') {
-        app.listen(process.env.port || 3000, () => {
-            console.log('Servidor rodando na porta 3000');
+        app.listen(process.env.port || 3001, () => {
+            console.log('Servidor rodando na porta 3001');
         });
     }
 });
